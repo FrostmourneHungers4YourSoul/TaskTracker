@@ -1,0 +1,40 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: task-tracker
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: ${DATABASE_SCHEMA:public}
+        format_sql: true
+    show-sql: false
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:${DATABASE_URL:postgresql://localhost:5432/postgres}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_USERNAME:postgres}
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    default-schema: ${DATABASE_SCHEMA:public}
+    driver-class-name: ${DATABASE_DRIVER:org.postgresql.Driver}
+
+logging:
+  level:
+    liquibase: INFO
+    org.springframework: INFO
+
+jwt:
+  secret-key: IdsqyC86npNrcPrRBnbSHgAIWjQz+9q3ydLy60vti+M=
+  access:
+    expiration: 900000 #15 min
+  refresh:
+    expiration: 604800000 #7 day
