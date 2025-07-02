@@ -4,9 +4,9 @@
 CREATE TABLE IF NOT EXISTS teams
 (
     id          BIGSERIAL,
-    name        VARCHAR(100) NOT NULL,
+    name        VARCHAR(100) UNIQUE NOT NULL,
     description TEXT,
-    created_by  BIGINT       NOT NULL,
+    created_by  BIGINT              NOT NULL,
     created_at  TIMESTAMP DEFAULT now(),
     updated_at  TIMESTAMP DEFAULT now(),
     CONSTRAINT pk_teams PRIMARY KEY (id),

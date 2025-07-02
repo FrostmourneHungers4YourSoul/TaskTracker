@@ -90,6 +90,17 @@ public class UserServiceImpl implements UserService {
         return new MessageResponse("User [" + user.getUsername() + "] has been removed.");
     }
 
+    @Override
+    public User getUserById(Long id) {
+        return getById(id);
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return repository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found."));
+    }
+
     private User getById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found."));

@@ -1,11 +1,17 @@
 package com.example.tracker.controller;
 
-import com.example.tracker.domain.model.Task;
-import com.example.tracker.domain.model.Team;
-import com.example.tracker.domain.model.TeamMember;
+import com.example.tracker.domain.dto.request.TeamMemberRequestDto;
+import com.example.tracker.domain.dto.request.TeamRequestDto;
+import com.example.tracker.domain.dto.response.MessageResponse;
+import com.example.tracker.domain.dto.response.TeamMemberResponseDto;
+import com.example.tracker.domain.dto.response.TeamResponseDto;
+import com.example.tracker.security.model.SecurityUser;
+import com.example.tracker.service.TeamService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,42 +27,46 @@ import java.util.List;
 @RequestMapping("/api/teams")
 @RequiredArgsConstructor
 public class TeamController {
+    private final TeamService teamService;
 
-    @PutMapping
-    public ResponseEntity<Task> create(@RequestBody Task task) {
-        return null;
+    @PostMapping
+    public ResponseEntity<TeamResponseDto> create(@RequestBody TeamRequestDto requestDto,
+                                                  @AuthenticationPrincipal SecurityUser user ) { //TODO
+        return ResponseEntity.ok(teamService.createTeam(requestDto));
     }
 
     @GetMapping
-    public ResponseEntity<List<Task>> getTasks() {
-        return ResponseEntity.ok(List.of());
+    public ResponseEntity<List<TeamResponseDto>> getTeams() {
+        return ResponseEntity.ok(teamService.getTeams());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Team> getTeam(@PathVariable @NotNull Long id) {
-        return null;
+    public ResponseEntity<TeamResponseDto> getTeam(@PathVariable @NotNull Long id) {
+        return ResponseEntity.ok(teamService.getTeam(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Team> update(@PathVariable @NotNull Long id,
-                                       @RequestBody Team team) {
-        return null;
+    public ResponseEntity<TeamResponseDto> update(@PathVariable @NotNull Long id,
+                                                  @RequestBody TeamRequestDto requestDto) {
+        return ResponseEntity.ok(teamService.updateTeam(id, requestDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Team> delete(@PathVariable @NotNull Long id) {
-        return null;
+    public ResponseEntity<MessageResponse> delete(@PathVariable @NotNull Long id) {
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(teamService.removeTeam(id));
     }
 
     @PostMapping("/{id}/members")
-    public ResponseEntity<Task> addTeamMember(@PathVariable @NotNull Long id,
-                                              @RequestBody TeamMember member) {
-        return null;
+    public ResponseEntity<TeamMemberResponseDto> addMember(@PathVariable @NotNull Long id,
+                                                           @RequestBody TeamMemberRequestDto memberRequest) {
+        return ResponseEntity.ok(teamService.addTeamMember(id, memberRequest));
     }
 
     @DeleteMapping("/{id}/members/{userId}")
-    public ResponseEntity<String> deleteTeamMember(@PathVariable @NotNull Long id,
-                                                   @PathVariable @NotNull Long userId) {
-        return null;
+    public ResponseEntity<MessageResponse> deleteMember(@PathVariable @NotNull Long id,
+                                                        @PathVariable @NotNull Long userId) {
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(teamService.deleteTeamMember(id, userId));
     }
 }

@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS refresh_tokens
 (
     id          BIGSERIAL,
     user_id     BIGINT       NOT NULL,
-    token       VARCHAR(255) NOT NULL,
+    token       VARCHAR(255) NOT NULL UNIQUE,
     expiry_date TIMESTAMP    NOT NULL,
     is_revoked  BOOLEAN DEFAULT FALSE,
     CONSTRAINT pk_refresh_tokens PRIMARY KEY (id),

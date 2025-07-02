@@ -4,7 +4,7 @@
 CREATE TABLE IF NOT EXISTS tasks
 (
     id          BIGSERIAL,
-    title       VARCHAR(100) NOT NULL,
+    title       VARCHAR(100) NOT NULL UNIQUE,
     description TEXT,
     status      VARCHAR(20)  NOT NULL DEFAULT ('NEW'),
     priority    INTEGER      NOT NULL CHECK (priority BETWEEN 1 AND 5),
@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS tasks
     assigned_to BIGINT,
     team_id     BIGINT,
     deadline    TIMESTAMP,
-    created_at  TIMESTAMP,
-    updated_at  TIMESTAMP,
+    created_at  TIMESTAMP             DEFAULT now(),
+    updated_at  TIMESTAMP             DEFAULT now(),
     CONSTRAINT pk_tasks PRIMARY KEY (id),
     CONSTRAINT fk_tasks_created_by FOREIGN KEY (created_by)
         REFERENCES users (id) ON DELETE CASCADE,

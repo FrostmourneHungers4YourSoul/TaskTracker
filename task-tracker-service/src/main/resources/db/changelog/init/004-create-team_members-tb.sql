@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS team_members
     user_id   BIGINT NOT NULL,
     joined_at TIMESTAMP DEFAULT now(),
     CONSTRAINT pk_team_members PRIMARY KEY (id),
+    CONSTRAINT uq_team_id_user_id_member UNIQUE (team_id, user_id),
     CONSTRAINT fk_team_members_team FOREIGN KEY (team_id)
         REFERENCES teams (id) ON DELETE CASCADE,
     CONSTRAINT fk_team_members_user FOREIGN KEY (user_id)

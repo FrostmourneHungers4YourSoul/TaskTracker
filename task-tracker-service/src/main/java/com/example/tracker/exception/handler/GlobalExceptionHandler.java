@@ -4,6 +4,7 @@ import com.example.tracker.exception.ResourceAlreadyExistsException;
 import com.example.tracker.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -32,6 +33,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ExceptionResponse> handleIllegalArgumentEx(IllegalArgumentException ex) {
+        ExceptionResponse response = new ExceptionResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                ex.getMessage()
+        );
+        return ResponseEntity.status(response.statusCode()).body(response);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ExceptionResponse> handleValidation(MethodArgumentNotValidException ex) {
         ExceptionResponse response = new ExceptionResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
