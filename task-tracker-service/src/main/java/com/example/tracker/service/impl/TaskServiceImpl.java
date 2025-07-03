@@ -78,7 +78,10 @@ public class TaskServiceImpl implements TaskService {
         Task task = getTaskById(id);
 
         task.setAssignedTo(assignedUser);
+        task.setUpdatedAt(LocalDateTime.now());
+
         task = repository.save(task);
+
         log.info("[{}] assigned to updated: [{}]", task.getTitle(), task);
         return mapper.toDto(task);
     }
@@ -88,7 +91,10 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponseDto updateStatus(Long id, Status status) {
         Task task = getTaskById(id);
         task.setStatus(status);
+        task.setUpdatedAt(LocalDateTime.now());
+
         task = repository.save(task);
+
         log.info("[{}] status updated: [{}]", task.getTitle(), task);
         return null;
     }
@@ -110,6 +116,7 @@ public class TaskServiceImpl implements TaskService {
         updatedTask.setUpdatedAt(LocalDateTime.now());
 
         updatedTask = repository.save(updatedTask);
+
         log.info("Task [{}] has been updated.", updatedTask.getTitle());
         return mapper.toDto(updatingTask);
     }

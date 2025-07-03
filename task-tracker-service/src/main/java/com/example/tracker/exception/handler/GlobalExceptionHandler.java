@@ -2,6 +2,7 @@ package com.example.tracker.exception.handler;
 
 import com.example.tracker.exception.ResourceAlreadyExistsException;
 import com.example.tracker.exception.ResourceNotFoundException;
+import org.hibernate.HibernateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,6 +44,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleValidation(MethodArgumentNotValidException ex) {
+        ExceptionResponse response = new ExceptionResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                ex.getMessage()
+        );
+        return ResponseEntity.status(response.statusCode()).body(response);
+    }
+
+    @ExceptionHandler(HibernateException.class)
+    public ResponseEntity<ExceptionResponse> handleValidation(HibernateException ex) {
         ExceptionResponse response = new ExceptionResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",

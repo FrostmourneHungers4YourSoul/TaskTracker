@@ -22,7 +22,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         ExceptionResponse errorResponse = new ExceptionResponse(
                 HttpServletResponse.SC_UNAUTHORIZED,
                 "Unauthorized",
-                "Access denied. Please authenticate."
+                "Invalid or missing credentials."
         );
 
         response.setContentType("application/json");

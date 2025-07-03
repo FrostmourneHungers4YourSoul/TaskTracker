@@ -38,6 +38,8 @@ public class UserServiceImpl implements UserService {
             throw new ResourceAlreadyExistsException("User with this email already exists.");
 
         User user = mapper.toEntity(requestDto);
+
+        user.setRole(requestDto.role());
         user.setPassword(passwordEncoder.encode(requestDto.password()));
 
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -67,18 +69,25 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponseDto updateUser(Long id, UserRequestDto requestDto) {
         User currentUser = getById(id);
-        currentUser.setUpdatedAt(LocalDateTime.now());
+
+        User updatedUser = mapper.toEntity(requestDto);
+
+        updatedUser.setId(currentUser.getId());
+        updatedUser.setCreatedAt(currentUser.getCreatedAt());
+        updatedUser.setUpdatedAt(LocalDateTime.now());
 
         if (StringUtils.hasText(requestDto.password()))
-            currentUser.setPassword(passwordEncoder.encode(requestDto.password()));
+            updatedUser.setPassword(passwordEncoder.encode(requestDto.password()));
 
         if (currentUser.getRole() == Role.ADMIN)
-            currentUser.setRole(requestDto.role());
+            updatedUser.setRole(requestDto.role());
+        else
+            updatedUser.setRole(currentUser.getRole());
 
-        currentUser = repository.save(currentUser);
+        updatedUser = repository.save(updatedUser);
 
-        log.info("User [{}] has been updated: {}", requestDto.username(), currentUser);
-        return mapper.toDto(currentUser);
+        log.info("User [{}] has been updated: {}", updatedUser.getUsername(), updatedUser);
+        return mapper.toDto(updatedUser);
     }
 
     @Override

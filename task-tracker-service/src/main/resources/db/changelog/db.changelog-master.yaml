@@ -1,13 +1,3 @@
 databaseChangeLog:
   - includeAll:
       path: db/changelog/init
-#  - include:
-#      file: db/changelog/init/001-create-users-tb.sql
-#  - include:
-#      file: db/changelog/init/002-create-teams-tb.sql
-#  - include:
-#      file: db/changelog/init/003-create-tasks-tb.sql
-#  - include:
-#      file: db/changelog/init/004-create-team_members-tb.sql
-#  - include:
-#      file: db/changelog/init/005-create-refresh_tokens-tb.sql

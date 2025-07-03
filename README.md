@@ -2,7 +2,9 @@
 
 ### 1. START
 
+eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInN1YiI6ImFkbWluIiwiaWF0IjoxNzUxNTEzMjQ0LCJleHAiOjE3NTE1MTQxNDR9.5ECWgZzewXNQlg5KlB5O25grhUlI8SoaZxYjr2f_vEc
 
+43947379-9ec8-4753-ad86-de8833ed944a
 ---
 
 ### 2. Описание проекта

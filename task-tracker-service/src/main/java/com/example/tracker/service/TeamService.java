@@ -10,7 +10,7 @@ import com.example.tracker.domain.model.Team;
 import java.util.List;
 
 public interface TeamService {
-    TeamResponseDto createTeam(TeamRequestDto requestDto);
+    TeamResponseDto createTeam(Long userId, TeamRequestDto requestDto);
 
     List<TeamResponseDto> getTeams();
 

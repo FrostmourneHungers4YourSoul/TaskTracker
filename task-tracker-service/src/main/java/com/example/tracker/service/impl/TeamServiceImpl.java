@@ -35,14 +35,17 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     @Transactional
-    public TeamResponseDto createTeam(TeamRequestDto requestDto) {
+    public TeamResponseDto createTeam(Long userId, TeamRequestDto requestDto) {
         if (teamRepository.existsTeamByName(requestDto.name()))
             throw new ResourceAlreadyExistsException(
                     "Team [" + requestDto.name() + "] is already exists.");
 
         Team newTeam = mapper.toEntity(requestDto);
-        User creator = userService.getUserById(requestDto.creatorId());
+        User creator = userService.getUserById(userId);
         newTeam.setCreatedBy(creator);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        newTeam.setCreatedAt(localDateTime);
+        newTeam.setUpdatedAt(localDateTime);
 
         newTeam = teamRepository.save(newTeam);
         log.info("Created Team: {}", newTeam);
@@ -67,11 +70,15 @@ public class TeamServiceImpl implements TeamService {
     @Transactional
     public TeamResponseDto updateTeam(Long id, TeamRequestDto requestDto) {
         Team updatingTeam = getTeamById(id);
-        User creator = userService.getUserById(requestDto.creatorId());
-        updatingTeam.setCreatedBy(creator);
-        updatingTeam.setUpdatedAt(LocalDateTime.now());
 
-        Team updatedTeam = teamRepository.save(updatingTeam);
+        Team updatedTeam = mapper.toEntity(requestDto);
+
+        updatedTeam.setId(updatingTeam.getId());
+        updatedTeam.setCreatedBy(updatingTeam.getCreatedBy());
+        updatedTeam.setCreatedAt(updatingTeam.getCreatedAt());
+        updatedTeam.setUpdatedAt(LocalDateTime.now());
+
+        updatedTeam = teamRepository.save(updatedTeam);
         log.info("Team updated: {}", updatedTeam);
         return mapper.toDto(updatedTeam);
     }
@@ -91,6 +98,7 @@ public class TeamServiceImpl implements TeamService {
         User user = userService.getUserById(memberRequest.userId());
 
         TeamMember teamMember = teamMemberService.createMember(team, user);
+
         log.info("User [{}] was added to team [{}]", user.getUsername(), team.getName());
         return mapper.toTeamMemberResponseDto(teamMember);
     }
@@ -101,6 +109,7 @@ public class TeamServiceImpl implements TeamService {
         User user = userService.getUserById(userId);
 
         teamMemberService.deleteMember(team, user);
+
         log.info("User [{}] was removed from team [{}]", user.getUsername(), team.getName());
         return new MessageResponse("User ["+ user.getUsername() +"] was removed from team [" + team.getName() +"]");
     }

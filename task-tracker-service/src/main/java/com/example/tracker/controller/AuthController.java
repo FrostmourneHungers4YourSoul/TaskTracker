@@ -5,6 +5,7 @@ import com.example.tracker.domain.dto.request.RefreshTokenRequest;
 import com.example.tracker.domain.dto.request.UserRequestDto;
 import com.example.tracker.domain.dto.response.AuthResponse;
 import com.example.tracker.security.service.AuthenticationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication")
 public class AuthController {
 
     private final AuthenticationService authenticationService;

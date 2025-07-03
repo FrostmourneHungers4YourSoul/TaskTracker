@@ -1,19 +1,22 @@
 package com.example.tracker.security;
 
+import com.example.tracker.exception.handler.ExceptionResponse;
 import com.example.tracker.security.model.SecurityUser;
 import com.example.tracker.security.service.CustomUserDetailsService;
 import com.example.tracker.security.service.JwtService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -28,6 +31,7 @@ import java.util.Objects;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final CustomUserDetailsService userDetailsService;
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -45,7 +49,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String token = header.substring(7);
-        String username = jwtService.extractUsername(token);
+        String username;
+        try {
+           username = jwtService.extractUsername(token);
+        } catch (ExpiredJwtException ex) {
+            log.error("ExpiredJwtException: {}", ex.getMessage());
+            handleExpiredToken(response);
+            return;
+        }
 
         log.info("Username found in JWT Token: {}", username);
 
@@ -69,5 +80,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    public void handleExpiredToken(HttpServletResponse response) throws IOException {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                HttpStatus.UNAUTHORIZED.value(),
+                "Token expired",
+                "Your session has expired. Please log in again."
+        );
+
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        String json = objectMapper.writeValueAsString(exceptionResponse);
+        response.getWriter().write(json);
     }
 }

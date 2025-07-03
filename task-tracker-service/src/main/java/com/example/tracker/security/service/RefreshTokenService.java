@@ -27,7 +27,8 @@ public class RefreshTokenService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found."));
 
-        refreshTokenRepository.findByUser(user).ifPresent(this::revokeToken);
+        refreshTokenRepository.findValidTokenByUser(user)
+                .ifPresent(this::revokeToken);
 
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(user)
@@ -43,15 +44,13 @@ public class RefreshTokenService {
         RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
                 .orElseThrow(() -> new TokenException("Invalid refresh token."));
 
-        if (refreshToken.getIsRevoked()) {
+        if (refreshToken.getIsRevoked())
             throw new TokenException("Refresh token revoked.");
-        }
 
         if (refreshToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             revokeToken(refreshToken);
             throw new TokenException("Refresh token expired.");
         }
-
         return refreshToken;
     }
 

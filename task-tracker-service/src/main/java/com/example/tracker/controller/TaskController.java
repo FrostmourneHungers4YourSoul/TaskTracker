@@ -73,7 +73,7 @@ public class TaskController {
 
     @PatchMapping("/{id}/assign")
     public ResponseEntity<TaskResponseDto> updateAssign(@PathVariable @NotNull Long id,
-                                             @RequestBody UserRequestDto user) {
+                                                        @RequestBody UserRequestDto user) {
         return ResponseEntity.ok(taskService.updateAssignedUser(id, user));
     }
 }
