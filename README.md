@@ -1,10 +1,9 @@
 # Task Tracker
 
-### 1. START
-
-eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInN1YiI6ImFkbWluIiwiaWF0IjoxNzUxNTEzMjQ0LCJleHAiOjE3NTE1MTQxNDR9.5ECWgZzewXNQlg5KlB5O25grhUlI8SoaZxYjr2f_vEc
-
-43947379-9ec8-4753-ad86-de8833ed944a
+### 1. Сборка и запуск
+   - Клонируйте проект: git clone https://github.com/FrostmourneHungers4YourSoul/TaskTracker
+   - Перейдите в директорию проекта: cd [ваша папка с проектом]
+   - docker-compose up --build
 ---
 
 ### 2. Описание проекта
@@ -85,22 +84,22 @@ eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpZCI6MSw
 ### 6. Требования безопасности
 
 * Пароли хэшируются через BCrypt
-* JWT сроком 15 минут
-* Refresh Token сроком 7 дней
+* JWT - 15 минут
+* Refresh Token - 7 дней
 * Все эндпоинты (кроме регистрации и входа) требуют JWT
 * Доступ по ролям
 * Изменение задач доступно только владельцу, назначенному пользователю или пользователям с более высокой ролью
 
 ---
 
-### 7. Требования
-* **Язык программирования**: Java 21
-* **Фреймворк**: Spring Boot 3.2.x или выше
-* **Система управления зависимостями**: Maven
-* **База данных**: PostgreSQL 16
-* **Безопасность**: Аутентификация и авторизация с помощью JWT и Refresh Token
-* **Документация API**: Swagger/OpenAPI
-* Unit-тесты с использованием **JUnit** и **Mockito**
-* Интеграционные тесты с использованием **Spring Boot Test**
-* Использование H2 базы данных в тестах
-* Минимальное покрытие: **70%**
+### 7. Технологический стек:
+  - Java 21
+  - Spring Boot 3
+  - Spring Security 6
+  - Spring Data JPA
+  - Spring Web (REST)
+  - Postgres 16
+  - Lombok
+  - Maven
+  - Docker
+
