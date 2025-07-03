@@ -44,7 +44,7 @@ public class SecurityConfig {
                                         "/swagger-resources/*",
                                         "/v3/api-docs/**")
                                 .permitAll()
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .exceptionHandling(exception ->
                         exception

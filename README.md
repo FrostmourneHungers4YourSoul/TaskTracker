@@ -4,6 +4,7 @@
    - Клонируйте проект: git clone https://github.com/FrostmourneHungers4YourSoul/TaskTracker
    - Перейдите в директорию проекта: cd [ваша папка с проектом]
    - docker-compose up --build
+
 ---
 
 ### 2. Описание проекта

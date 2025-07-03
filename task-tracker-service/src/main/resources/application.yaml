@@ -27,6 +27,7 @@ spring:
     default-schema: ${DATABASE_SCHEMA:public}
     driver-class-name: ${DATABASE_DRIVER:org.postgresql.Driver}
 
+
 logging:
   level:
     liquibase: INFO
@@ -38,3 +39,8 @@ jwt:
     expiration: 900000 #15 min
   refresh:
     expiration: 604800000 #7 day
+
+springdoc:
+  swagger-ui:
+    config-url: /v3/api-docs/swagger-config
+    url: /v3/api-docs
